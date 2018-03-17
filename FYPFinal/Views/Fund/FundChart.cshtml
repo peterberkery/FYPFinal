@@ -1,0 +1,188 @@
+﻿@model ChartLibrary.FundInstance
+@{ViewBag.Title = "FundChart";}
+@{ Layout = "~/Views/Shared/_Layout.cshtml";}
+
+
+
+<head>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <meta charset="utf-8">
+    <!-- Bootstrap core CSS-->
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Blog style customer stylesheet https://startbootstrap.com/template-overviews/blog-home/-->
+    <link href="~/css/blog-home.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="~/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="~/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <script src="~/Scripts/jquery-1.10.2.js"> </script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"> </script>
+    <style>
+        label {
+            font-size: 18px;
+            font-weight: lighter;
+        }
+
+        select {
+            width: 250px;
+            height: 40px;
+            padding: 0 14px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="col-lg-1 col-offset-6 centered">
+            <div class="card" style="width: 100rem;">
+                <div class="card-body">
+                    <h2 style="margin:25px 0; color:#5a5a5a;"> Historical Fund & Cryptocurrency Values </h2>   <div class="clear"> </div>
+                    <h4 style="margin:25px 0; color:#5a5a5a;"> Purchases made on the 1st, 8th, 15th nd 22nd of each month based on respective votes </h4>   <div class="clear"> </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <section id="loginForm" style="margin-bottom:25px;">
+                                <span style="margin-right:15px; font-size:15px; font-weight:lighter;"> @Html.LabelFor(m => m.FundName, "Fund Week") </span>
+                                @Html.DropDownListFor(m => m.FundName, new SelectList(Model.FundInstanceList, "FundId", "FundName"), new
+                       {
+                           @onchange = "drawChart()",
+                           @id = "fundNameList"
+                       })
+                            </section>
+                            @*<p class="card-text">This chart highlights month-by-month fund and cryptocurrency values starting from January 2018.</p>*@
+                        </div>
+                    </div>
+                    <div class="clear"> </div>
+                    <div>
+                        <div id="Fund_Chart" style="width: 100%; height: 500px">
+                        </div>
+                    </div>
+                    <div id="divProcessing" class="processingButton" style="display: none; text-align: center">
+                        <img src="~/Images/ajaxloader_small.gif" width="16" height="11" />
+                    </div>
+                    <div id="divLoading" class="loadingCampus">
+                        <div class="LoadingImageForActivity">
+                            <img width="31" height="31" alt="" src="~/Images/ajax-loader-round-dashboard.gif" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    google.load("visualization", "1",
+    {
+    packages: ["corechart"]
+    });
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart()
+    {
+    var fundId = $('#fundNameList :selected').val();
+    $.ajax(
+    {
+    url: '@Url.Action("FundDashboardList", "Fund")',
+    dataType: "json",
+    data:
+    {
+    fundId: fundId
+    },
+    type: "GET",
+    error: function (xhr, status, error)
+    {
+    var err = eval("(" + xhr.responseText + ")");
+    toastr.error(err.message);
+    },
+    beforeSend: function ()
+    {
+    $("#divLoading").show();
+    },
+    success: function (data)
+    {
+    FundDashboardChart(data);
+    return false;
+    },
+    error: function (xhr, status, error)
+    {
+    var err = eval("(" + xhr.responseText + ")");
+    toastr.error(err.message);
+    },
+    complete: function ()
+    {
+    $("#divLoading").hide();
+    }
+    });
+    return false;
+    }
+    //This function is used to bind the user data to chart
+    function FundDashboardChart(data)
+    {
+    $("#Fund_Chart").show();
+    var dataArray = [
+    //['Date', 'Bitcoin', 'Price Bitcoin', 'Price Ethereum', 'Bitcoin Cash', 'Price Bitcoin Cash', 'Litecoin', 'Price Litecoin', 'Ripple', 'Price Ripple', 'Fun Value']
+        ['Date', 'Price Bitcoin', 'Price Ethereum', 'Price Bitcoin Cash', 'Price Litecoin', 'Price Ripple', 'Fund Value']
+
+    ];
+    $.each(data, function (i, item)
+    {
+    //dataArray.push([item.Date, item.Bitcoin, item.PBitcoin, item.PEthereum, item.BitcoinCash, item.PBitcoinCash, item.Litecoin, item.PLitecoin, item.Ripple, item.PRipple, item.FundValue]);
+    dataArray.push([item.Date,item.PBitcoin, item.PEthereum, item.PBitcoinCash, item.PLitecoin, item.PRipple, item.FundValue]);
+
+    });
+    var data = google.visualization.arrayToDataTable(dataArray);
+    var options = {
+    pointSize: 10,
+    legend:
+    {
+    position: 'top',
+    textStyle:
+    {
+    color: '#f5f5f5'
+    }
+    },
+    colors: ['#34A853', 'ff6600', '#FBBC05'],
+    backgroundColor: '#454545',
+    hAxis:
+    {
+    title: 'Points of Investment',
+    titleTextStyle:
+    {
+    italic: false,
+    color: '#00BBF1',
+    fontSize: '20'
+    },
+    textStyle:
+    {
+    color: '#f5f5f5'
+    }
+    },
+    vAxis:
+    {
+    baselineColor: '#f5f5f5',
+        title: '$ Value US',
+    titleTextStyle:
+    {
+    color: '#00BBF1',
+    italic: false,
+    fontSize: '20'
+    },
+    textStyle:
+    {
+    color: '#f5f5f5'
+    },
+    viewWindow:
+    {
+    min: 0,
+    format: 'long'
+    }
+    },
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('Fund_Chart'));
+    chart.draw(data, options);
+    return false;
+    }; </script>
+
+</body>

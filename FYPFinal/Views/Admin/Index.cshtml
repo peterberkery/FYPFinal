@@ -1,0 +1,67 @@
+﻿@model IEnumerable<FYPFinal.Models.VoteFinal>
+
+@{
+    ViewBag.Title = "Index";
+
+}
+
+
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VBitcoin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VEthereum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VBitcoinCash)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VLitecoin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VRipple)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VBitcoin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VEthereum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VBitcoinCash)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VLitecoin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VRipple)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Vid }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Vid }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Vid })
+            </td>
+        </tr>
+    }
+
+</table>

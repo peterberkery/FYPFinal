@@ -1,0 +1,118 @@
+﻿@model FYPFinal.Models.VoteFinal
+
+@{
+    ViewBag.Title = "Vote";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <meta charset="utf-8">
+    <!-- Bootstrap core CSS-->
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Blog style customer stylesheet https://startbootstrap.com/template-overviews/blog-home/-->
+    <link href="~/css/blog-home.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="~/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="~/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+    <div class="container">
+        <div class="col-lg-10 col-offset-6 centered">
+            <div class="card-body">
+                <div class="card-header">
+                    <h1>Please cast your Vote</h1>
+                </div>
+                <p> Each member can cast a single vote each week to determine which coin we will buy with membership contributions</p>
+            </div>
+
+            @using (Html.BeginForm())
+            {
+                // This form allows users to choose a coin to vote for
+
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "h2 control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.VBitcoin, htmlAttributes: new { @class = "h2 control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.VBitcoin, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.VBitcoin, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @*<div class="form-group">
+                            @Html.LabelFor(model => model.VBitcoin, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.CheckBoxFor(m => m.VBitcoin, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.VBitcoin, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.VEthereum, htmlAttributes: new { @class = "h2 control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.VEthereum, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.VEthereum, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.VBitcoinCash, htmlAttributes: new { @class = "h2 control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.VBitcoinCash, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.VBitcoinCash, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.VLitecoin, htmlAttributes: new { @class = "h2 control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.VLitecoin, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.VLitecoin, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.VRipple, htmlAttributes: new { @class = "h2 control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.VRipple, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.VRipple, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-dark" />
+                        </div>
+                    </div>
+                </div>
+            }
+            </div>
+        </div>
+
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+            }
+</body>
+</html>

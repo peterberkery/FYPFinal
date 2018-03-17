@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@*from: https://startbootstrap.com/template-overviews/clean-blog/*@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Bitvestor Blog</title>
+    <!-- Bootstrap core CSS -->
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href="~/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- Custom styles for this template -->
+    <link href="~/css/clean-blog.min.css" rel="stylesheet">
+</head>
+<body>
+
+
+    <nav class="navbar-fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <!-- logo made with: https://logomakr.com/ -->
+        <a href="#" class="navbar-left" onclick="@("window.location.href='" + @Url.Action("Dash","Dash") + "'");"><img src="~/images/BVLogo3.png" height="65px" width="450px"></a>
+        @*<a class="navbar-brand" href="#">Navbar</a>*@
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="h1 navbar-btn nav-link" onclick="@("window.location.href='" + @Url.Action("FundChart","Fund") + "'");" href="#">Fund Info</a>
+                <a class="h1 navbar-btn nav-link" onclick="@("window.location.href='" + @Url.Action("Index","Vote") + "'");" href="#">Voting</a>
+                <a class="h1 navbar-btn nav-link" onclick="@("window.location.href='" + @Url.Action("","Fund") + "'");" href="#">Fund</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('~/images/bg-masthead.jpg')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <div class="site-heading">
+                        <h1>Bitvestor Blog</h1>
+                        <span class="subheading">Updates and discussion on the club's developments</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="post-preview">
+                    <a @*href="post1.cshtml"*@ onclick="@("window.location.href='" + @Url.Action("Post1","Blog") + "'");">
+                        <h2 class="post-title">
+                            Last week's vote results
+                        </h2>
+                        <h3 class="post-subtitle">
+                            Bitcoin won
+                        </h3>
+                    </a>
+                    <p class="post-meta">
+                        Posted by
+                        <a href="#" >Site Admin</a>
+                        on March 8th, 2018
+                    </p>
+                </div>
+                <hr>
+                <div class="post-preview">
+                   The great price dip of 2018
+                    <a @*href="post.html"*@ onclick="@("window.location.href='" + @Url.Action("Post2","Blog") + "'");">
+                        <h2 class="post-title">
+                            Should we buy more coins whule the market is seemingly crashing?
+                        </h2>
+                    </a>
+                    <p class="post-meta">
+                        Posted by
+                        <a href="#">From Reddit User: Suuperdad</a>
+                        on February 5th, 2018
+                    </p>
+                </div>
+                
+                <!-- Pager -->
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; Bitvestor 2018</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom scripts for this template -->
+    <script src="~/js/clean-blog.min.js"></script>
+</body>
+</html>

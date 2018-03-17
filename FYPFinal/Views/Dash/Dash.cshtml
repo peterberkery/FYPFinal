@@ -1,0 +1,205 @@
+﻿@model ChartLibrary.FundInstance
+@{
+    ViewBag.Title = "Dash";
+   // Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <meta charset="utf-8">
+    <!-- Bootstrap core CSS-->
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Blog style customer stylesheet https://startbootstrap.com/template-overviews/blog-home/-->
+    <link href="~/css/blog-home.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="~/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="~/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="~/css/sb-admin.css" rel="stylesheet">
+    <link href="~/vendor/datatables/dataTables.bootstrap4.js" rel="stylesheet">
+    <link href="~/css/half-slider.css" rel="stylesheet">
+    <link href="css/grayscale.min.css" rel="stylesheet">
+</head>
+<body>
+     <br />
+    <br />
+     
+    <div class="row">
+        <!-- Left column-->
+        <div class="col-sm-3">
+            <h1>Current Coin Values</h1>
+            <section class="card-body"></section>
+        </div>
+        <!-- Right column-->
+        <div class="col-7">
+            <!-- Last week's votes card-->
+            <!-- Chart Tutorial from: https://www.w3schools.com/howto/howto_google_charts.asp-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>Last Week's Vote Results</h1>
+                </div>
+                <div id="piechart"></div>
+                @*<div id="chart2" class="panel-body">
+                </div>*@
+            </div>
+            <!-- Admin Buttons-->
+            <div class="col-6">
+                <div class="card my-4">
+                    <h1 class="card-header">Admin Tools</h1>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ul class="h2 list-unstyled mb-0">
+                                    <li>
+                                        <a onclick="@("window.location.href='" + @Url.Action("List","Admin") + "'");" href="#">Voting Table View</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6">
+                                <ul class="h2 list-unstyled mb-0">
+                                    <li>
+                                        <a onclick="@("window.location.href='" + @Url.Action("Edit","Admin") + "'");" href="#">Voting Table Edit</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <!-- Twitter feed-->
+                <div class="col-6">
+                    <div class="card my-2">
+                        <h1 class="card-header">Cryptocurrency News on Twitter</h1>
+                        <div class="card-body">
+                            <!-- Twitter example widget(needs login): https://twitter.com/settings/widgets/967829082040950784/edit?focus_textarea=1&notice=WIDGET_CREATED-->
+                            <!-- make widgets on: https://twitter.com/settings/widgets/ -->
+                            <a class="twitter-timeline" href="https://twitter.com/hashtag/cryptocurrencynews" data-widget-id="967829082040950784">#cryptocurrencynews Tweets </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>  
+
+
+    <script src="~/js/sb-admin-charts.min.js"></script>
+    <!-- Twitter Widget script-->
+    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + "://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); } }(document, "script", "twitter-wjs");</script>
+    <!-- COINMARKET API BASED OFF Tutorial: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON -->
+    <script>
+        var header = document.querySelector('header');
+        var section = document.querySelector('section');
+
+        // call the variables from the APi URL
+        // requestURL variable stored for later use, using API service: https://coinmarketcap.com
+        var requestURL = 'https://api.coinmarketcap.com/v1/ticker/?convert=EUR&limit=5';
+        // create new request object instance
+        var request = new XMLHttpRequest();
+        // HTTP method 'GET' to simply retrieve the coin data needed
+        // 'requestURL' the URL to make the request to, which was stored above
+        request.open('GET', requestURL);
+        // set responseType to JSON so that xmlHttpRequest knows the server will be returning JSON & will need to be converted behind the scenes to a JS object
+        // send request using 'send' method'
+        request.responseType = 'json';
+        request.send();
+        // this section waits for response to return for server
+        // wrapping code in an event handler when the load event fires on the request obect 'onload'
+        //this is because the load event fires when the reponse has successfully returned
+        //this guarantees that 'request.response' will defo be available when we want to do something with it
+        request.onload = function () {
+            // storing the server reponse to our request in 'response' property in variable calles 'prices'
+            // this variable will now contain the JS object based on the JSON response
+            var response = request.response;
+            // passing the object to two function calls:
+            // the first will fill <header> with the appropriate data
+            populateHeader(response);
+            // will create an information card for each price we wish to examine
+            showPrices(response);
+        }
+        //Populate Header function
+        function populateHeader(jsonObj) {
+            //var myH1 = document.createElement('h1');
+            //myH1.textContent = jsonObj['name'];
+            //header.appendChild(myH1);
+
+            //var myPara = document.createElement('p');
+            //myPara.textContent = 'Hometown: ' + jsonObj['name'] + ' // Formed: ' + jsonObj['formed'];
+            //header.appendChild(myPara);
+        }
+        //Populate Section function with all prices
+        // call the jsonObj which was stored previously
+        function showPrices(jsonObj) {
+            var prices = jsonObj;
+            // creates html elements to display JSON object information for each in the array
+            for (var i = 0; i < prices.length; i++) {
+                var myArticle = document.createElement('article');
+                var myH2 = document.createElement('h2');
+                var Div1 = document.createElement('div');
+                var myPara1 = document.createElement('p');
+                var Div2 = document.createElement('div');
+                var myPara2 = document.createElement('p');
+                var Div3 = document.createElement('div');
+                var myPara3 = document.createElement('p');
+                var myPara4 = document.createElement('p');
+                var myPara5 = document.createElement('p');
+                // apply styles to newly created objects
+                myArticle.className = 'card mb-3'
+                myH2.className = 'card-header'
+                myPara1.className = 'h2 text-success'
+                myPara2.className = 'h2 text-primary'
+                myPara3.className = 'h2 text-muted'
+                myPara4.className = 'h2 text-muted'
+                myPara5.className = 'h3 text-muted'
+                // populate html elements with selected API JSON obj content
+                myH2.textContent = prices[i].name;
+                myPara1.textContent = ' - $' + prices[i].price_usd; + 'USD';
+                //Div1.textContent = myPara1;
+                myPara2.textContent = ' - €' + prices[i].price_eur; + 'EUR';
+                myPara3.textContent = ' - 1 hour: ' + prices[i].percent_change_1h + '%';
+                myPara4.textContent = ' - 24 hour: ' + prices[i].percent_change_24h + '%';
+                myPara5.textContent = ' - 7 Days: ' + prices[i].percent_change_7d + '%';
+                //append the saved items above to the html view to display
+                myArticle.appendChild(myH2);
+                myArticle.appendChild(myPara1);
+                myArticle.appendChild(Div1);
+                myArticle.appendChild(myPara2);
+                myArticle.appendChild(myPara3);
+                myArticle.appendChild(myPara4);
+                myArticle.appendChild(myPara5);
+                section.appendChild(myArticle);
+            }
+        }
+    </script>
+
+    <!-- Chart Tutorial from: https://www.w3schools.com/howto/howto_google_charts.asp-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- Chart Tutorial from: https://www.w3schools.com/howto/howto_google_charts.asp-->
+    <script type="text/javascript">
+        // Load google charts
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Draw the chart and set the chart values
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                ['Bitcoin', 10],
+                ['Ethereum', 12],
+                ['Bitcoin Cash', 4],
+                ['Litecoin', 6],
+                ['Ripple', 3],
+            ]);
+
+            // Optional; add a title and set the width and height of the chart
+            var options = { 'title': 'Vote Distribution', 'width': 700, 'height': 500 };
+
+            // Display the chart inside the <div> element with id="piechart"
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+        }
+    </script>
+</body>
+</html>

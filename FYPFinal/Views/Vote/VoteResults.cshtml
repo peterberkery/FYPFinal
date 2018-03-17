@@ -1,0 +1,11 @@
+﻿
+    @{
+        var myChart = new Chart(width: 600, height: 400)
+            .AddTitle(" Previous Vote Results")
+            .AddSeries(
+                name: "Crypto Coins",
+                xValue: new[] { "Bitcoin", "Ethereum", "Bitcoin Cash", "Litecoin", "Ripple" },
+                yValues: new[] { "6", "10", "11", "5", "3" })
+            .Write();
+
+    }
